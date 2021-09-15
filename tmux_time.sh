@@ -6,7 +6,7 @@ Time_fn () {
   if test -f "$FILE"; then
       timestr=$(head -n 1 $FILE)
       if [ "$booly" = "true" ]; then
-        rm -f $FILE >/dev/null 
+        rm -f $FILE 
       fi
   fi
 }
@@ -17,7 +17,7 @@ Pid () {
   if test -f "$FILE"; then
       pidstr=$(head -n 1 $FILE)
       if [ "$booly" = "true" ]; then
-        rm -f $FILE >/dev/null 
+        rm -f $FILE
       fi
   fi
 }
