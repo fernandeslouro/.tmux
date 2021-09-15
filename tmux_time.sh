@@ -28,7 +28,7 @@ if [ "$order" = "start" ]; then
   Time_fn true
   printf "$time"
   printf "\n"
-  eval "sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown" ${time} " -o /tmp/stopwatch > /dev/null '"
+  eval "sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown ${time} -o /tmp/stopwatch > /dev/null '"
   printf "aystret"
   printf "\n"
  
@@ -40,7 +40,7 @@ elif [ "$order" = "continue" ];then
   Pid true
   Time_fn true
   printf "$timestr"
-  sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown ${timestr}  -o /tmp/stopwatch > /dev/null ' &
+  eval " sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown ${timestr}  -o /tmp/stopwatch > /dev/null ' "
 fi
 
 
