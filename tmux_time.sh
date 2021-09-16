@@ -31,6 +31,7 @@ if [ "$order" = "start" ]; then
   printf "\n"
   # sh -c "echo $$ > /tmp/stopwatch_pid; exec termdown ${time} -o /tmp/stopwatch > /dev/null "
   termdown ${time} -o /tmp/stopwatch > /dev/null &
+
   counter_pid=$!
   printf "$counter_pid"
   echo "$counter_pid" >> "$PID_FILE"
