@@ -28,13 +28,14 @@ if [ "$order" = "start" ]; then
   Pid true
   Time_fn true
   printf "$time"
+  printf "|"
   printf "\n"
-  # sh -c "echo $$ > /tmp/stopwatch_pid; exec termdown ${time} -o /tmp/stopwatch > /dev/null "
-  termdown ${time} -o /tmp/stopwatch > /dev/null 
+  sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown '"${time}"' -o /tmp/stopwatch > /dev/null' 
+  #termdown ${time} -o /tmp/stopwatch > /dev/null 
 
-  counter_pid=$!
-  printf "$counter_pid"
-  echo "$counter_pid" >> "$PID_FILE"
+  #counter_pid=$!
+  #printf "$counter_pid"
+  #echo "$counter_pid" >> "$PID_FILE"
 
   printf "aystret"
   printf "\n"
@@ -48,7 +49,7 @@ elif [ "$order" = "continue" ];then
   Pid true
   Time_fn true
   printf "$timestr"
-  eval " sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown ${timestr}  -o /tmp/stopwatch > /dev/null ' "
+  sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown '"${timestr// /}"' -o /tmp/stopwatch > /dev/null' 
 fi
 
 
