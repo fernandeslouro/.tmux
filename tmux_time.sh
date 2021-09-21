@@ -27,7 +27,7 @@ time="$2"
 if [ "$order" = "start" ]; then
   Pid true
   Time_fn true
-  sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown '"${time}"' -o /tmp/stopwatch > /dev/null' 
+  sh -c 'echo $$ > /tmp/stopwatch_pid; sh sw.sh &' 
 
 elif [ "$order" = "pause" ]; then
   Pid false
@@ -36,7 +36,7 @@ elif [ "$order" = "pause" ]; then
 elif [ "$order" = "continue" ];then
   Pid true
   Time_fn true
-  sh -c 'echo $$ > /tmp/stopwatch_pid; exec termdown '"${timestr// /}"' -o /tmp/stopwatch > /dev/null' 
+  sh -c 'echo $$ > /tmp/stopwatch_pid; sh sh.sh -c {timestr// /}"' &' 
 fi
 
 
