@@ -28,22 +28,11 @@ if [[ "$1" == "-c" || "$1" == "--continue" ]]; then
   minutes="$(cut -d':' -f2 <<<"$time"|bc)"
   seconds="$(cut -d':' -f3 <<<"$time"|bc)"
   DATE_INPUT=$((hours*3600+minutes*60+seconds))
-  START_TIME=$((-DATE_INPUT))
-  #START_TIME=$((START_TIME+DATE_INPUT))
+  #START_TIME=$((-DATE_INPUT))
+  START_TIME=$((START_TIME+DATE_INPUT))
 fi
 
-echo "$DATE_INPUT"
-echo " \n"
-
-# GNU date accepts the input date differently than BSD
-if [[ $USE_GNU_DATE == "1" ]]; then
-    DATE_INPUT="--date now-${START_TIME}sec"
-else
-    DATE_INPUT="-v-${START_TIME}S"
-fi
-
-
-echo "$DATE_INPUT"
+DATE_INPUT="--date now-${START_TIME}sec"
 
 while [ true ]; do
     #STOPWATCH=$(TZ=UTC datef $DATE_INPUT $DATE_FORMAT | ( [[ "$NANOS_SUPPORTED" ]] && sed 's/.\{7\}$//' || cat ) )
