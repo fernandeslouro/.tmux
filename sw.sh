@@ -7,7 +7,7 @@
 #  - start a stopwatch from the last saved start time (or current time if no last saved start time exists)
 #  - "-r" stands for --resume
 
-function finish {
+finish () {
   tput cnorm # Restore cursor
   exit 0
 }
@@ -17,7 +17,7 @@ trap finish EXIT
 # Use GNU date if possible as it's most likely to have nanoseconds available
 hash gdate 2>/dev/null
 USE_GNU_DATE=$?
-function datef {
+datef () {
     if [[ $USE_GNU_DATE == "0" ]]; then 
         gdate "$@"
     else
@@ -48,6 +48,8 @@ if [[ "$1" == "-c" || "$1" == "--continue" ]]; then
   seconds="$(cut -d':' -f3 <<<"$time"|bc)"
   DATE_INPUT=$((hours*3600+minutes*60+seconds))
   echo "$DATE_INPUT"
+  START_TIME=$((START_TIME+24*3600-DATE_INPUT))
+  echo "$START_TIME"
 fi
 
 # GNU date accepts the input date differently than BSD
