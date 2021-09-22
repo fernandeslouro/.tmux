@@ -27,8 +27,9 @@ time="$2"
 if [ "$order" = "start" ]; then
   Pid true
   Time_fn true
-  sh -c 'echo $$ > /tmp/stopwatch_pid; bash ~/.tmux/sw.sh' 
-
+  #sh -c 'echo $$ > /tmp/stopwatch_pid; bash ~/.tmux/sw.sh' &
+  ~/.tmux/sw.sh &
+  echo $! > /tmp/stopwatch_pid
 elif [ "$order" = "pause" ]; then
   Pid false
   kill $pidstr
@@ -36,7 +37,9 @@ elif [ "$order" = "pause" ]; then
 elif [ "$order" = "continue" ];then
   Pid true
   Time_fn true
-  sh -c 'echo $$ > /tmp/stopwatch_pid; bash sw.sh -c '"${timestr// /}"' &' 
+  #sh -c 'echo $$ > /tmp/stopwatch_pid; bash sw.sh -c '"${timestr// /}"' '
+  ~/.tmux/sw.sh -c "${timestr// /}" &
+  echo $! > /tmp/stopwatch_pid
 fi
 
 

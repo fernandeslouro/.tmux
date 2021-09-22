@@ -47,9 +47,7 @@ if [[ "$1" == "-c" || "$1" == "--continue" ]]; then
   minutes="$(cut -d':' -f2 <<<"$time"|bc)"
   seconds="$(cut -d':' -f3 <<<"$time"|bc)"
   DATE_INPUT=$((hours*3600+minutes*60+seconds))
-  echo "$DATE_INPUT"
   START_TIME=$((START_TIME+24*3600-DATE_INPUT))
-  echo "$START_TIME"
 fi
 
 # GNU date accepts the input date differently than BSD
@@ -59,9 +57,6 @@ else
     DATE_INPUT="-v-${START_TIME}S"
 fi
 
-
-echo $DATE_INPUT 
-echo $(TZ=UTC datef $DATE_INPUT $DATE_FORMAT)
 
 while [ true ]; do
     STOPWATCH=$(TZ=UTC datef $DATE_INPUT $DATE_FORMAT | ( [[ "$NANOS_SUPPORTED" ]] && sed 's/.\{7\}$//' || cat ) )
