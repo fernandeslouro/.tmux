@@ -7,6 +7,16 @@
 #  - start a stopwatch from the last saved start time (or current time if no last saved start time exists)
 #  - "-r" stands for --resume
 
+# Use GNU date if possible as it's most likely to have nanoseconds available
+hash gdate 2>/dev/null
+USE_GNU_DATE=$?
+datef () {
+    if [[ $USE_GNU_DATE == "0" ]]; then 
+        gdate "$@"
+    else
+        date "$@"
+    fi
+}
 
 DATE_FORMAT="+%H:%M:%S"
 
@@ -22,6 +32,9 @@ if [[ "$1" == "-c" || "$1" == "--continue" ]]; then
   #START_TIME=$((START_TIME+DATE_INPUT))
 fi
 
+echo "$DATE_INPUT"
+echo " \n"
+
 # GNU date accepts the input date differently than BSD
 if [[ $USE_GNU_DATE == "1" ]]; then
     DATE_INPUT="--date now-${START_TIME}sec"
@@ -29,6 +42,8 @@ else
     DATE_INPUT="-v-${START_TIME}S"
 fi
 
+
+echo "$DATE_INPUT"
 
 while [ true ]; do
     #STOPWATCH=$(TZ=UTC datef $DATE_INPUT $DATE_FORMAT | ( [[ "$NANOS_SUPPORTED" ]] && sed 's/.\{7\}$//' || cat ) )
