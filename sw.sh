@@ -29,16 +29,16 @@ DATE_FORMAT="+%H:%M:%S"
 
 tput civis # hide cursor
 
-# If -r is passed, use saved start time from ~/.sw
-if [[ "$1" == "-r" || "$1" == "--resume" ]]; then
-    if [[ ! -f $HOME/.sw ]]; then
-        datef +%s > $HOME/.sw
-    fi
-    START_TIME=$(cat $HOME/.sw)
-else
-    START_TIME=$(datef +%s)
-    echo -n $START_TIME > $HOME/.sw
-fi
+# # If -r is passed, use saved start time from ~/.sw
+# if [[ "$1" == "-r" || "$1" == "--resume" ]]; then
+#     if [[ ! -f $HOME/.sw ]]; then
+#         datef +%s > $HOME/.sw
+#     fi
+#     START_TIME=$(cat $HOME/.sw)
+# else
+#     START_TIME=$(datef +%s)
+#     echo -n $START_TIME > $HOME/.sw
+# fi
 
 # UNIX timestamp of time imput when continuing count
 if [[ "$1" == "-c" || "$1" == "--continue" ]]; then
