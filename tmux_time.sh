@@ -27,19 +27,11 @@ time="$2"
 if [ "$order" = "start" ]; then
   Pid true
   Time_fn true
-  echo "$time"
-  if [ -z "${time+x}" ];then
-    # time is unset
-    ~/.tmux/sw.sh &
+    ~/.tmux/sw.sh 00:00:00 &
     echo $! > /tmp/stopwatch_pid
-    #if [ -z ${var+x} ]; then echo "var is unset"; else echo "var is set to '$var'"; fi
-  else
-    #time is set
-    echo "$time"
-    echo "$time" > /tmp/stopwatch
-    ~/.tmux/sw.sh -c "${timestr// /}" &
-    echo $! > /tmp/stopwatch_pid
-  fi
+    #echo "$time" > /tmp/stopwatch
+    #~/.tmux/sw.sh "${timestr// /}" &
+    #echo $! > /tmp/stopwatch_pid
 elif [ "$order" = "pause" ]; then
   Pid false
   kill $pidstr
@@ -47,8 +39,7 @@ elif [ "$order" = "pause" ]; then
 elif [ "$order" = "continue" ];then
   Pid true
   Time_fn true
-  echo "${timestr// /}"
-  ~/.tmux/sw.sh -c "${timestr// /}" &
+  ~/.tmux/sw.sh "${timestr// /}" &
   echo $! > /tmp/stopwatch_pid
 fi
 
