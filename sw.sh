@@ -3,7 +3,6 @@
 
 DATE_FORMAT="+%H:%M:%S"
 
-
 time="$1"
 hours="$(cut -d':' -f1 <<<"$time"|bc)"
 minutes="$(cut -d':' -f2 <<<"$time"|bc)"
