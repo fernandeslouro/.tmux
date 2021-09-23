@@ -29,7 +29,6 @@ sw_f () {
   DATE_INPUT=$((hours*3600+minutes*60+seconds))
   NOW_TS=$(date '+%s')
   START_TIME=$((NOW_TS-DATE_INPUT))
-  #TZ=UTC date --date now-$(($(date '+%s')-3600))sec "+%H:%M:%S"
 
   DATE_INPUT="--date now-${START_TIME}sec"
   DATE_FORMAT="+%H:%M:%S"
@@ -47,11 +46,13 @@ time="$2"
 if [ "$order" = "start" ]; then
   Pid true
   Time_fn true
+  if [ -z "$2" ];then
     sw_f 00:00:00 &
     echo $! > /tmp/stopwatch_pid
-    #echo "$time" > /tmp/stopwatch
-    #~/.tmux/sw.sh "${timestr// /}" &
-    #echo $! > /tmp/stopwatch_pid
+  else
+    sw_f "$time" &
+    echo $! > /tmp/stopwatch_pid
+  fi
 elif [ "$order" = "pause" ]; then
   Pid false
   kill $pidstr
