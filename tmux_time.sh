@@ -41,11 +41,11 @@ sw_f () {
 }
 
 
-Pid true
 order="$1"
 time="$2"
 
 if [ "$order" = "start" ]; then
+  Pid true
   Time_fn true
   echo "running" > /tmp/timestatus
   if [ -z "$2" ];then
@@ -55,20 +55,13 @@ if [ "$order" = "start" ]; then
     sw_f "$time" &
     echo $! > /tmp/stopwatch_pid
   fi
-elif [ "$order" = "pause" ]; then
-  kill $pidstr
-elif [ "$order" = "continue" ];then
-  Time_fn true
-  sw_f "${timestr// /}" &
-  echo $! > /tmp/stopwatch_pid
 elif [ "$order" = "toggle" ];then
-  if test -f "$STATUS_FILE"; then
+  if test -f "$PID_FILE"; then
+    Pid true
     #running,we want to pause
     kill $pidstr
-    rm -f $STATUS_FILE 
   else
     #not running,we want to continue
-    echo "running" > /tmp/timestatus
     Time_fn true
     sw_f "${timestr// /}" &
     echo $! > /tmp/stopwatch_pid
@@ -78,10 +71,4 @@ elif [ "$order" = "finish" ];then
   kill $pidstr
 fi
 
-
-# Toggle:
-
-# Counter is running (both files populated):
-
-# Counter is not running (only time is populated):
 
