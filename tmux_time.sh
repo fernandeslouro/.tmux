@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-PID_FILE=/tmp/stopwatch_pid
-TIME_FILE=/tmp/stopwatch
-STATUS_FILE=/tmp/timestatus
+PID_FILE=/tmp/tmux_tempus_pid
+TIME_FILE=/tmp/tmux_tempus
+TMUX_FILE=/tmp/tmux_tempus_bar
 
 Time_fn () {
   if test -f "$TIME_FILE"; then
@@ -35,7 +35,7 @@ sw_f () {
   DATE_FORMAT="+%H:%M:%S"
   while [ true ]; do
       STOPWATCH=$(TZ=UTC date $DATE_INPUT $DATE_FORMAT)
-      echo $STOPWATCH > /tmp/stopwatch
+      echo $STOPWATCH > $TIME_FILE
       sleep 1
   done
 }
@@ -47,28 +47,31 @@ time="$2"
 if [ "$order" = "start" ]; then
   Pid true
   Time_fn true
-  echo "running" > /tmp/timestatus
   if [ -z "$2" ];then
     sw_f 00:00:00 &
-    echo $! > /tmp/stopwatch_pid
+    echo $! > $PID_FILE
   else
     sw_f "$time" &
-    echo $! > /tmp/stopwatch_pid
+    echo $! > $PID_FILE
   fi
+    echo "~" > $TMUX_FILE
 elif [ "$order" = "toggle" ];then
   if test -f "$PID_FILE"; then
-    Pid true
     #running,we want to pause
+    Pid true
+    Time_fn false
     kill $pidstr
+    echo $timestr > $TMUX_FILE
   else
     #not running,we want to continue
     Time_fn true
     sw_f "${timestr// /}" &
-    echo $! > /tmp/stopwatch_pid
+    echo $! > $PID_FILE
+    echo "~" > $TMUX_FILE
   fi
 elif [ "$order" = "finish" ];then
+  Pid true
   Time_fn true
+  rm -f $TMUX_FILE 
   kill $pidstr
 fi
-
-
