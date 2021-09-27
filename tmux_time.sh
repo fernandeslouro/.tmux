@@ -61,13 +61,13 @@ elif [ "$order" = "toggle" ];then
     Pid true
     Time_fn false
     kill $pidstr
-    echo $timestr > $TMUX_FILE
+    echo " $timestr " > $TMUX_FILE
   else
     #not running,we want to continue
     Time_fn true
     sw_f "${timestr// /}" &
     echo $! > $PID_FILE
-    echo "~" > $TMUX_FILE
+    echo " ~ " > $TMUX_FILE
   fi
 elif [ "$order" = "finish" ];then
   Pid true
