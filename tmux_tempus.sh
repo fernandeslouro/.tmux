@@ -24,7 +24,7 @@ sw_f () {
   done
 }
 
-if [ "$1" = "outer" ]; then
+if [ "$1" = "start" ]; then
   # starts or ends a count
   if test -f "$TIME_FILE"; then
     if test -f "$PID_FILE"; then
@@ -45,7 +45,7 @@ if [ "$1" = "outer" ]; then
     echo $! > $PID_FILE
     echo " ~ " > $TMUX_FILE
   fi
-elif [ "$1" = "toggle" ]; then
+elif [ "$1" = "pause" ]; then
   # pauses and continues a paused count, can also start counts
   if test -f "$PID_FILE"; then
     # running,we want to pause
