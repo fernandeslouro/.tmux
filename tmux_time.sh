@@ -24,10 +24,7 @@ sw_f () {
   done
 }
 
-
-order="$1"
-time="$2"
-if [ "$order" = "outer" ]; then
+if [ "$1" = "outer" ]; then
   # starts or ends a count
   if test -f "$TIME_FILE"; then
     if test -f "$PID_FILE"; then
@@ -35,25 +32,20 @@ if [ "$order" = "outer" ]; then
       pidstr=$(head -n 1 $PID_FILE)
       kill $pidstr
       rm -f $PID_FILE 
-      rm -f $TIME_FILE 
-      rm -f $TMUX_FILE 
-    else
-      # paused (timer and no pid file), we want to delete files
-      rm -f $TIME_FILE
-      rm -f $TMUX_FILE 
     fi
+    # if paused (timer and no pid file), we only want to delete these 2 files
+    rm -f $TIME_FILE $TMUX_FILE
   else
     # not running (no timer and no pid file), we want to start
-    echo " ~ " > $TMUX_FILE
     if [ -z "$2" ];then
       sw_f 00:00:00 &
-      echo $! > $PID_FILE
     else
-      sw_f "$time" &
-      echo $! > $PID_FILE
+      sw_f "$2" &
     fi
+    echo $! > $PID_FILE
+    echo " ~ " > $TMUX_FILE
   fi
-elif [ "$order" = "toggle" ]; then
+elif [ "$1" = "toggle" ]; then
   # pauses and continues a paused count, can also start counts
   if test -f "$PID_FILE"; then
     # running,we want to pause
