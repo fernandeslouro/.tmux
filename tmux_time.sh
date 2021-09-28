@@ -4,25 +4,6 @@ PID_FILE=/tmp/tmux_tempus_pid
 TIME_FILE=/tmp/tmux_tempus
 TMUX_FILE=/tmp/tmux_tempus_bar
 
-# gets variable for time and optionally deletes file
-Time_fn () {
-  if test -f "$TIME_FILE"; then
-      timestr=$(head -n 1 $TIME_FILE)
-      if [ "$1" = "true" ]; then
-        rm -f $TIME_FILE 
-      fi
-  fi
-}
-
-# gets variable for pid and optionally deletes file
-Pid () {
-  if test -f "$PID_FILE"; then
-      pidstr=$(head -n 1 $PID_FILE)
-      if [ "$1" = "true" ]; then
-        rm -f $PID_FILE
-      fi
-  fi
-}
 
 # starts a stopwatch from the provided times (from zero if not provided)
 sw_f () {
@@ -51,13 +32,14 @@ if [ "$order" = "outer" ]; then
   if test -f "$TIME_FILE"; then
     if test -f "$PID_FILE"; then
       # running (timer and pid file), we want to kill command and delete files
-      Pid true
-      Time_fn true
-      rm -f $TMUX_FILE 
+      pidstr=$(head -n 1 $PID_FILE)
       kill $pidstr
+      rm -f $PID_FILE 
+      rm -f $TIME_FILE 
+      rm -f $TMUX_FILE 
     else
       # paused (timer and no pid file), we want to delete files
-      Time_fn true
+      rm -f $TIME_FILE
       rm -f $TMUX_FILE 
     fi
   else
@@ -75,13 +57,15 @@ elif [ "$order" = "toggle" ]; then
   # pauses and continues a paused count, can also start counts
   if test -f "$PID_FILE"; then
     # running,we want to pause
-    Pid true
-    Time_fn false
+    pidstr=$(head -n 1 $PID_FILE)
     kill $pidstr
+    rm -f $PID_FILE 
+    timestr=$(head -n 1 $TIME_FILE)
     echo " $timestr " > $TMUX_FILE
   else
     # not running, we want to continue or start a count
-    Time_fn true
+    timestr=$(head -n 1 $TIME_FILE)
+    rm -f $TIME_FILE 
     sw_f "${timestr// /}" &
     echo $! > $PID_FILE
     echo " ~ " > $TMUX_FILE
