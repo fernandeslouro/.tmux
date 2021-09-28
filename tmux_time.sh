@@ -57,14 +57,11 @@ if [ "$order" = "outer" ]; then
       kill $pidstr
     else
       # paused (timer and no pid file), we want to delete files
-      Pid true
       Time_fn true
       rm -f $TMUX_FILE 
     fi
   else
     # not running (no timer and no pid file), we want to start
-    Pid true
-    Time_fn true
     echo " ~ " > $TMUX_FILE
     if [ -z "$2" ];then
       sw_f 00:00:00 &
