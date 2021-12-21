@@ -1,3 +1,4 @@
 [submodule "tmux-tempus"]
 	path = tmux-tempus
 	url = https://github.com/fernandeslouro/tmux-tempus.git
+	branch = master
